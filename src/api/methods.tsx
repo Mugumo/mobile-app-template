@@ -1,6 +1,7 @@
 const baseURL = process.env.NEXT_PUBLIC_API_URL
 
 export const login = async (payload: { email: string, password: string }) => {
+    console.log(baseURL)
     const approval = await fetch(baseURL + "/authenticate", {
         method: 'POST',
         body: JSON.stringify(payload)

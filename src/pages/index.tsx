@@ -23,14 +23,14 @@ export default function Home() {
     e.preventDefault()
     const notification = toast.loading("Authenticating...")
     console.log("Submit these values to auth API::", email, password)
-    login({
+    await login({
       email: email,
       password: password
     }).then(() => {
       toast.success("Login Successful", { id: notification })
     }).catch((error) => {
       console.log("Error logging in::: ", error)
-      toast.success("Wrong password or email address! Please try again", { id: notification })
+      toast.error("Wrong password or email address! Please try again", { id: notification })
     })
   }
   return (
