@@ -1,7 +1,9 @@
+import { login } from '@/api/methods'
 import { BasicField } from '@/components/Input/BasicField'
 import { Page } from '@/components/Page/Page'
 import Image from 'next/image'
 import { ChangeEvent, useState } from 'react'
+import toast from 'react-hot-toast'
 
 
 export default function Home() {
@@ -17,9 +19,19 @@ export default function Home() {
 
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const notification = toast.loading("Authenticating...")
     console.log("Submit these values to auth API::", email, password)
+    login({
+      email: email,
+      password: password
+    }).then(() => {
+      toast.success("Login Successful", { id: notification })
+    }).catch((error) => {
+      console.log("Error logging in::: ", error)
+      toast.success("Wrong password or email address! Please try again", { id: notification })
+    })
   }
   return (
     <Page title='Login' description='Login page'>
@@ -33,7 +45,7 @@ export default function Home() {
             Login
           </p>
 
-          <form className='flex flex-col gap-3' onSubmit={(e)=>handleSubmit(e)}>
+          <form className='flex flex-col gap-3' onSubmit={(e) => handleSubmit(e)}>
             <BasicField
               placeholder='john.doe@gmail.com'
               type='text'
